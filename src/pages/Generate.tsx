@@ -3,6 +3,7 @@ import { generateText } from "../api/generate";
 import { textSchema } from "../schema/text.schema";
 export function Generate() {
 	const [textValue, setTextValue] = useState("");
+	const [language, setLanguage] = useState("fr");
 
 	const [audioUrl, setAudioUrl] = useState<string | null>(null);
 	const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -12,7 +13,7 @@ export function Generate() {
 	const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		const result = textSchema.safeParse({ text: textValue });
+		const result = textSchema.safeParse({ text: textValue, language });
 
 		if (!result.success) {
 			console.log("Données invalides");
@@ -45,6 +46,18 @@ export function Generate() {
     focus-within:ring-2 focus-within:ring-primary/20
   "
 			>
+				<label htmlFor="language" className="sr-only">
+					Langue du texte
+				</label>
+				<select
+					id="language"
+					value={language}
+					onChange={(event) => setLanguage(event.target.value)}
+					className="select w-auto shrink-0 rounded-full"
+				>
+					<option value="fr">Français</option>
+					<option value="en">English</option>
+				</select>
 				<label htmlFor="text" className="sr-only">
 					Texte à convertir
 				</label>
